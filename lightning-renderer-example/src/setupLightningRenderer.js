@@ -1,8 +1,10 @@
 import { RendererMain } from '@lightningjs/renderer';
+import { Inspector } from '@lightningjs/renderer/inspector';
 import { SdfTextRenderer, WebGlCoreRenderer } from '@lightningjs/renderer/webgl';
+import { shaders } from '@lightningjs/renderer/webgl';
 
-function setupLightningRenderer() {
-    const canvasWrapperDivElement = document.createElement('div');
+async function setupLightningRenderer() {
+    const canvasWrapper = document.createElement('div');
     const canvasElement = document.createElement('canvas');
 
     const renderer = new RendererMain(
@@ -23,13 +25,23 @@ function setupLightningRenderer() {
                 enableAnimationMonitoring: true,
             },
         },
-        canvasWrapperDivElement
+        canvasWrapper
     );
 
+    await installShaders(renderer.stage);
+
     return {
-        canvasElement,
+        canvasWrapper,
         renderer
     }
+}
+
+async function installShaders(stage) {
+  stage.shManager.registerShaderType('Border', shaders.Border);
+  stage.shManager.registerShaderType('LinearGradient', shaders.LinearGradient);
+  stage.shManager.registerShaderType('RadialGradient', shaders.RadialGradient);
+  stage.shManager.registerShaderType('Rounded', shaders.Rounded);
+  stage.shManager.registerShaderType('RoundedWithBorder', shaders.RoundedWithBorder);
 }
 
 export { setupLightningRenderer };

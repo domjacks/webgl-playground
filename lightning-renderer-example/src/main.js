@@ -1,12 +1,12 @@
 import { setupLightningRenderer } from "./setupLightningRenderer";
 
-function main() {
+async function main() {
 
   const appElement = document.getElementById("app");
 
-  const { renderer, canvasElement } = setupLightningRenderer();
+  const { renderer, canvasWrapper } = await setupLightningRenderer();
 
-  appElement.appendChild(canvasElement);
-
-
+  appElement.appendChild(canvasWrapper);
 }
+
+await main();
